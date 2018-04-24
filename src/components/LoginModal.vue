@@ -29,6 +29,7 @@
 
 <script>
 import axios from 'axios'
+import swal from 'sweetalert'
 
 export default {
   name: 'LoginModal',
@@ -42,13 +43,9 @@ export default {
     login: function () {
       let email = this.email
       let password = this.password
-      console.log(this.$baseUrl)
-      console.log(this.email)
-      console.log(this.password)
       let urlLink = `${this.$baseUrl}/signin`
       axios.post(urlLink, {email, password})
         .then(response => {
-          console.log(response.data)
           if (response.data.message !== 'User Login Succesfully') {
             swal({
               type: 'error',
@@ -58,7 +55,6 @@ export default {
           } else {
             localStorage.setItem('token', response.data.token)
             this.$isLogin = true
-            console.log(this.$isLogin)
             swal(
               'Good job!',
               'You log in successfully!',
@@ -70,6 +66,11 @@ export default {
         })
         .catch(err => {
           console.log(err)
+          swal({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Email / Password is wrong!'
+          })
         })
     }
   }

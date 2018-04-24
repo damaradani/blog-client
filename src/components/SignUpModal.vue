@@ -29,6 +29,7 @@
 
 <script>
 import axios from 'axios'
+import swal from 'sweetalert'
 
 export default {
   name: 'SignUpModal',
@@ -38,98 +39,110 @@ export default {
       new_email: '',
       new_password: '',
       new_conPass: '',
-      //kondisi apakah pengecekan nama, email dan password sudah sukses
+      // kondisi apakah pengecekan nama, email dan password sudah sukses
       isName: false,
       isEmail: false,
       isPwd: false,
-      isConPwd: false,
+      isConPwd: false
     }
   },
   methods: {
-    signup: function(payload){
+    signup: function (payload) {
       let name = this.regis_name
       let email = this.new_email
       let password = this.new_password
-      let urlLink = `${this.$baseUrl}/signup` //heroku server
-
-      console.log('Name :', name)
-      console.log('Email :', email)
-      console.log('Password :', password)
-      console.log(urlLink)
+      let urlLink = `${this.$baseUrl}/signup`
       axios.post(urlLink, {name, email, password})
-           .then(function(res){
-             swal(
-               'Sign Up!',
-               'You sign up successfully!',
-               'success'
-             ).then((value) => {
-               window.location.href = "index.html"
-             })
-           })
-           .catch(function(err){
-             console.log(err)
-             swal({
-                 icon: 'error',
-                 title: 'Oops...',
-                 text: 'Email is not available!',
-                 })
-           })
+        .then(function (res) {
+          swal(
+            'Sign Up!',
+            'You sign up successfully!',
+            'success'
+          ).then((value) => {
+            window.location.href = 'index.html'
+          })
+        })
+        .catch(function (err) {
+          console.log(err)
+          swal({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Email is not available!'
+          })
+        })
     }
   },
-  watch:{
-    regis_name: function(){
-      if(this.regis_name.length > 4){
+  watch: {
+    regis_name: function () {
+      if (this.regis_name.length > 4) {
+        // eslint-disable-next-line
         $('#SUnameCek').text('')
+        // eslint-disable-next-line
         $('#SUname').css({'border-color': 'green', 'border-solid': 'bold', 'border-width': '3px'})
         this.isName = true
-      }else {
+      } else {
+        // eslint-disable-next-line
         $('#SUnameCek').text('Name is Required && minimal 4 character').css('color','red')
+        // eslint-disable-next-line
         $('#SUname').css({'border-color': 'red', 'border-solid': 'bold', 'border-width': '3px'})
         this.isName = false
       }
     },
-    new_email: function(){
+    new_email: function () {
       let email = this.new_email
+      // eslint-disable-next-line
       let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       let checkEmail = regEx.test(String(email).toLowerCase())
-      console.log(checkEmail)
-      if(checkEmail){
+      if (checkEmail) {
+        // eslint-disable-next-line
         $('#SUemailCek').text('')
-        $('#SUemail').css({"border-color": 'green', "border-solid": 'bold', "border-width": '3px'})
+        // eslint-disable-next-line
+        $('#SUemail').css({'border-color': 'green', 'border-solid': 'bold', 'border-width': '3px'})
         this.isEmail = true
-      }else{
-        $('#SUemailCek').text('Email Format is Wrong!').css("color","red")
+      } else {
+        // eslint-disable-next-line
+        $('#SUemailCek').text('Email Format is Wrong!').css('color','red')
+        // eslint-disable-next-line
         $('#SUemail').css({'border-color': 'red', 'border-solid': 'bold', 'border-width': '3px'})
         this.isEmail = false
       }
     },
-    new_password: function(){
+    new_password: function () {
       let pwd = this.new_password
-      console.log(pwd)
-      if(pwd.length > 6){
+      if (pwd.length > 6) {
         let numInPwd = pwd.match(/[0-9]/g)
-        if(numInPwd){
+        if (numInPwd) {
+          // eslint-disable-next-line
           $('#SUpasswordCek').text('')
-          $('#SUpassword').css({"border-color": 'green', "border-solid": 'bold', "border-width": '3px'})
+          // eslint-disable-next-line
+          $('#SUpassword').css({'border-color': 'green', 'border-solid': 'bold', 'border-width': '3px'})
           this.isPwd = true
-        }else{
-          $('#SUpasswordCek').text('Password must contained number!').css("color","red")
+        } else {
+          // eslint-disable-next-line
+          $('#SUpasswordCek').text('Password must contained number!').css('color','red')
+          // eslint-disable-next-line
           $('#SUpassword').css({'border-color': 'red', 'border-solid': 'bold', 'border-width': '3px'})
           this.isPwd = false
         }
-      }else{
-        $('#SUpasswordCek').text('Password minimal 6 digit!').css("color","red")
+      } else {
+        // eslint-disable-next-line
+        $('#SUpasswordCek').text('Password minimal 6 digit!').css('color','red')
+        // eslint-disable-next-line
         $('#SUpassword').css({'border-color': 'red', 'border-solid': 'bold', 'border-width': '3px'})
         this.isPwd = false
       }
     },
-    new_conPass: function(){
-      if(this.new_conPass == this.new_password){
-        $('#SUconPassCek').text("")
-        $('#SUconPass').css({"border-color": 'green', "border-solid": 'bold', "border-width": '3px'})
+    new_conPass: function () {
+      if (this.new_conPass === this.new_password) {
+        // eslint-disable-next-line
+        $('#SUconPassCek').text('')
+        // eslint-disable-next-line
+        $('#SUconPass').css({'border-color': 'green', 'border-solid': 'bold', 'border-width': '3px'})
         this.isConPwd = true
-      }else{
-        $('#SUconPassCek').text("password not match").css("color","red")
+      } else {
+        // eslint-disable-next-line
+        $('#SUconPassCek').text('password not match').css('color','red')
+        // eslint-disable-next-line
         $('#SUconPass').css({'border-color': 'red', 'border-solid': 'bold', 'border-width': '3px'})
         this.isConPwd = false
       }

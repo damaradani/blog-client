@@ -15,7 +15,6 @@
             </div>
         </div>
     </div>
-    
     <EditBlogModal v-if="title && content" :Blogid="id" :Btitle="title" :Bcontent="content" />
   </main>
 </template>
@@ -45,35 +44,35 @@ export default {
   },
   methods: {
     delete_blog: function () {
-      // console.log(`Delete blog with id : ${this.id}`)
+      let token = localStorage.getItem('token')
       swal({
         title: 'Are you sure?',
         text: `Do you really gonna delete "${this.title}"`,
         icon: 'warning',
         buttons: [true, 'Yes Delete it']
-      }).then(result => {
-          if (result) {
-            axios.delete(`${this.$baseUrl}/blog/delete/` + this.id, {headers: {token: this.token}})
-            .then(res => {
-              swal(
-                'Deleted!',
-                `${this.title} have been deleted.`,
-                'success'
-              ).then((value) => {
-                // window.location.href= "index.html"
-                this.$route.push('/')
-              })
-            })
-            .catch(err => {
-              console.log(err)
-              swal({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong'
-              })
-            })
-        }
       })
+        .then(result => {
+          if (result) {
+            axios.delete(`${this.$baseUrl}/blog/delete/` + this.id, {headers: {token: token}})
+              .then(res => {
+                swal(
+                  'Deleted!',
+                  `${this.title} have been deleted.`,
+                  'success'
+                ).then((value) => {
+                  this.$router.push('/')
+                })
+              })
+              .catch(err => {
+                console.log(err)
+                swal({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Something went wrong'
+                })
+              })
+          }
+        })
     },
     dateFormat: function (date) {
       let newDate = new Date(date)
@@ -90,11 +89,8 @@ export default {
   created: function () {
     this.userId = this.$userId
     this.role = this.$role
-    console.log(this.$userId)
-    console.log(this.$role)
     axios.get(`${this.$baseUrl}/blog/` + this.id)
       .then(res => {
-        // console.log(res.data.data)
         this.title = res.data.data.title
         this.content = res.data.data.content
         this.createdAt = res.data.data.createdAt
@@ -110,7 +106,6 @@ export default {
       .then(response => {
         let states = response.data.states // token valid ato ga? return true or false
         if (states) {
-          console.log('User Data===>', response.data.user)
           this.userId = response.data.user._id
           this.role = response.data.user.role
         }

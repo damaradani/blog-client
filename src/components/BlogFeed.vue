@@ -50,7 +50,7 @@ export default {
     let getBlogLink = `${this.$baseUrl}/blog/all`
     axios.get(getBlogLink)
       .then(response => {
-        console.log(response.data.data)
+        // console.log(response.data.data)
         this.blogFeeds = response.data.data.reverse()
       })
       .catch(err => {

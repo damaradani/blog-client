@@ -55,14 +55,12 @@ export default {
   },
   methods: {
     logout: function () {
-      console.log('Logout')
       swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         icon: 'warning',
         buttons: [true, 'Yes, Log out!']
       }).then(result => {
-        console.log(result);
         if (result) {
           swal(
             'Log out!',
@@ -75,7 +73,6 @@ export default {
             // window.location.href= "index.html"
             this.$route.push('/')
           })
-          
         }
       })
     }
@@ -84,19 +81,13 @@ export default {
     let token = localStorage.getItem('token')
     axios.get(`${this.$baseUrl}/cektoken`, {headers: { token }})
       .then(response => {
-        console.log(response.data)
         let states = response.data.states // token valid ato ga? return true or false
-        this.$isLogin = states //buat global
+        this.$isLogin = states // buat global
         this.isLogin = states
         if (states) {
-          console.log('User Data===>', response.data.user)
           this.$userId = response.data.user._id
           this.$role = response.data.user.role
-          console.log('User Id===>', this.$userId)
-          console.log('Rolenya===>', this.$role)
         }
-        // console.log(response.data.states)
-        console.log(this.$isLogin)
       })
       .catch(err => {
         console.log(err)

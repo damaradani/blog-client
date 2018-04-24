@@ -22,6 +22,7 @@
 
 <script>
 import axios from 'axios'
+import swal from 'sweetalert'
 
 export default {
   name: 'CreateBlogModal',
@@ -37,32 +38,28 @@ export default {
       let title = this.title
       let content = this.content
       let urlLink = `${this.$baseUrl}/blog/create`
-      console.log(title)
-      console.log(content)
-      console.log(urlLink)
-      console.log(this.token)
 
-      axios.post(urlLink, { title, content }, { headers: { token: this.token }}
-      ).then(res => {
+      axios.post(urlLink, {title, content}, {headers: {token: this.token}})
+        .then(res => {
           swal(
             'New Article!',
             'Article has been created',
             'success'
           ).then((value) => {
-            window.location.href = "index.html"
+            window.location.href = 'index.html'
           })
-
-      }).catch(err => {
-        swal({
-           icon: 'error',
-           title: 'Oops...',
-           text: err
+        }).catch(err => {
+          console.log(err)
+          swal({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong'
+          })
         })
-      })
     }
   },
   created: function () {
-    this.token = localStorage.getItem('token') 
+    this.token = localStorage.getItem('token')
   }
 }
 </script>
